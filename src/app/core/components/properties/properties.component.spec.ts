@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Properties } from './properties';
+import { Properties } from './properties.component';
 
 describe('Properties', () => {
   let component: Properties;

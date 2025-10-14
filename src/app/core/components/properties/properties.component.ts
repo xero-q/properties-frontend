@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import {  MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { PropertiesService } from '../../services/properties';
+import { PropertiesService } from '../../services/properties.service';
 import { Pagination, Property } from '../../../shared/interfaces/property.interface';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,8 +16,8 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,],
-  templateUrl: './properties.html',
-  styleUrl: './properties.scss'
+  templateUrl: './properties.component.html',
+  styleUrl: './properties.component.scss'
 })
 export class Properties {
   private readonly propertiesService = inject(PropertiesService);
