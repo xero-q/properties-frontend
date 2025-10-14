@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Properties {
   private readonly propertiesService = inject(PropertiesService);
-  displayedColumns = ['id','name','location','status','createdAt','actions'];
+  displayedColumns = ['id','host','name','location','status','createdAt','actions'];
   dataSource = new MatTableDataSource<Property>([]);
 
   totalItems = 0;

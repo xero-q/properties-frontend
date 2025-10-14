@@ -1,3 +1,5 @@
+import { Host } from "./host.interface";
+
 export interface Property {
     id:number;
     hostId:number;
@@ -6,6 +8,7 @@ export interface Property {
     pricePerNight:number;
     status:0 | 1;
     createdAt:Date;
+    host:Host;
 }
 
 export interface Pagination<T> {
