@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { MatCellDef, MatHeaderCellDef, MatHeaderRowDef, MatRowDef, MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import {  MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { PropertiesService } from '../../services/properties';
 import { Pagination, Property } from '../../../shared/interfaces/property.interface';
 import { MatSortModule } from '@angular/material/sort';
