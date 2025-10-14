@@ -1,0 +1,16 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* full viewport height */
+}
+
+/* Table grows naturally */
+.table-container {
+  flex: 1 0 auto; /* natural height, can grow if needed */
+  overflow: auto;  /* scrolls if table gets too big */
+}
+
+/* Paginator stays at the bottom */
+mat-paginator {
+  flex-shrink: 0;
+}
