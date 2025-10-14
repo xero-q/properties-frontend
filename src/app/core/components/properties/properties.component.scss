@@ -14,3 +14,9 @@
 mat-paginator {
   flex-shrink: 0;
 }
+
+.filter-row {
+  mat-form-field {
+    margin-right:2rem;
+  }
+}

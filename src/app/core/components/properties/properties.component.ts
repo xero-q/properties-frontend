@@ -8,6 +8,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-properties',
@@ -17,6 +19,8 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    FormsModule,
   CommonModule],
   templateUrl: './properties.component.html',
   styleUrl: './properties.component.scss'
@@ -30,12 +34,17 @@ export class Properties {
   pageSize = 10;
   pageNumber = 1;
 
+  hostFilter = '';
+  nameFilter = '';
+  locationFilter = '';
+  statusFilter = '';
+
   ngOnInit(){
    this.loadData();
   }
 
   loadData(){
-      this.propertiesService.getPaginated(this.pageSize,this.pageNumber).subscribe((data:Pagination<Property>)=>{
+      this.propertiesService.getPaginated(this.pageSize,this.pageNumber, this.nameFilter,this.locationFilter, this.statusFilter ? Number(this.statusFilter):undefined).subscribe((data:Pagination<Property>)=>{
         this.totalItems = data.totalItems; 
         this.dataSource.data = data.result;
     })
@@ -46,4 +55,16 @@ export class Properties {
     this.pageNumber = event.pageIndex + 1; 
     this.loadData();
   }
+
+  applyFilters(){
+      this.loadData();
+  }
+
+  resetFilters(){
+    this.nameFilter = '';
+    this.locationFilter = '';
+    this.statusFilter = '';
+    this.loadData();
+  }
+ 
 }

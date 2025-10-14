@@ -1,5 +1,30 @@
 <div class="mat-elevation-z8 page-container"> 
     <div class="table-container mat-elevation-z8">
+<div class="filter-row">
+  <mat-form-field appearance="outline">
+    <input matInput [(ngModel)]="hostFilter" placeholder="Filter by host">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <input matInput [(ngModel)]="nameFilter" placeholder="Filter by name">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <input matInput [(ngModel)]="locationFilter" placeholder="Filter by location">
+  </mat-form-field>
+
+<mat-form-field appearance="outline">
+   <mat-label>Status</mat-label>
+    <mat-select [(ngModel)]="statusFilter">
+      <mat-option [value]="''">Select Status</mat-option>
+      <mat-option value="0">Inactive</mat-option>
+      <mat-option value="1">Active</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+   <button mat-button color="primary" (click)="applyFilters()">Apply Filters</button>
+   <button mat-button color="primary" (click)="resetFilters()">Reset Filters</button>
+</div>
 
   <table mat-table [dataSource]="dataSource" matSort class="full-width-table">
 
