@@ -7,6 +7,7 @@ import { Pagination, Property } from '../../../shared/interfaces/property.interf
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-properties',
@@ -15,13 +16,14 @@ import { MatInputModule } from '@angular/material/input';
     MatSortModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule,],
+    MatInputModule,
+  CommonModule],
   templateUrl: './properties.component.html',
   styleUrl: './properties.component.scss'
 })
 export class Properties {
   private readonly propertiesService = inject(PropertiesService);
-  displayedColumns = ['id','name','location','status','actions'];
+  displayedColumns = ['id','name','location','status','createdAt','actions'];
   dataSource = new MatTableDataSource<Property>([]);
 
   totalItems = 0;

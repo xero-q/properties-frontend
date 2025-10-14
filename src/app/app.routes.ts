@@ -3,7 +3,9 @@ import { Properties } from './core/components/properties/properties.component';
 
 export const routes: Routes = [
     {
-          path: '',
+          path: 'properties',
          component: Properties,
-    }
+    },
+     { path: '', redirectTo: 'properties', pathMatch: 'full' },
+  { path: '**', redirectTo: 'properties' },
 ];
