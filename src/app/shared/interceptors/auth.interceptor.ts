@@ -4,9 +4,12 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpErrorResponse,
 } from '@angular/common/http';
 import {
+  catchError,
   Observable,
+  throwError,
 } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -26,17 +29,23 @@ export class AuthInterceptor implements HttpInterceptor {
     // If request URL includes one of the excluded URLs, skip adding the token
     const shouldExclude = excludedUrls.some((url) => req.url.includes(url));
 
-    if (token && !shouldExclude) {
-      const cloned = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+   const clonedReq = token && !shouldExclude
+      ? req.clone({
+          setHeaders: { Authorization: `Bearer ${token}` },
+        })
+      : req;
 
-      return next.handle(cloned);
-    }
+      return next.handle(clonedReq).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 || error.status === 403) {
+          // Automatically logout user
+          this.authService.logout();
+        }
 
-    return next.handle(req);
+        // Re-throw the error so components can still handle it if needed
+        return throwError(() => error);
+      })
+    );
   }
   
 }
