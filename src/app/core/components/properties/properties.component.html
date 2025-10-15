@@ -1,3 +1,7 @@
+@if (isLoading()){
+  <app-loading [fullscreen]="true"></app-loading>
+}
+@else {
 <div class="mat-elevation-z8 page-container"> 
     <div class="table-container mat-elevation-z8">
 <div class="filter-row">
@@ -103,4 +107,4 @@
 </mat-paginator>
 
 </div>
-
+}

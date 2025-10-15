@@ -14,10 +14,11 @@ import { HostsService } from '../../services/hosts.service';
 import { Host } from '../../../shared/interfaces/host.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { PropertyFormComponent } from '../property-form/property-form.component';
+import { LoadingComponent } from "../../../shared/components/loading/loading.component";
 
 @Component({
   selector: 'app-properties',
-  imports: [ MatTableModule,
+  imports: [MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatButtonModule,
@@ -25,7 +26,7 @@ import { PropertyFormComponent } from '../property-form/property-form.component'
     MatInputModule,
     MatSelectModule,
     FormsModule,
-  CommonModule],
+    CommonModule, LoadingComponent],
   templateUrl: './properties.component.html',
   styleUrl: './properties.component.scss'
 })
@@ -47,17 +48,22 @@ export class PropertiesComponent implements OnInit {
 
   protected readonly hosts = signal<Host[]>([]);
 
+  isLoading = signal(true);
+
   ngOnInit(){
-   this.loadData();
+   
    this.hostsService.getAll().subscribe((data:Host[])=>{
     this.hosts.set(data);
+    this.loadData();
    })
   }
 
   loadData(){
-      this.propertiesService.getPaginated(this.pageSize,this.pageNumber, this.nameFilter,this.locationFilter, this.statusFilter ? Number(this.statusFilter):undefined,this.hostFilter ? Number(this.hostFilter):undefined).subscribe((data:Pagination<Property>)=>{
+    this.isLoading.set(true);  
+    this.propertiesService.getPaginated(this.pageSize,this.pageNumber, this.nameFilter,this.locationFilter, this.statusFilter ? Number(this.statusFilter):undefined,this.hostFilter ? Number(this.hostFilter):undefined).subscribe((data:Pagination<Property>)=>{
         this.totalItems = data.totalItems; 
         this.dataSource.data = data.result;
+        this.isLoading.set(false);
     })
   }
 
