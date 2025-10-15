@@ -7,9 +7,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
