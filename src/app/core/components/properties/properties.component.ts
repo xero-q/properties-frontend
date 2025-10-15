@@ -131,7 +131,8 @@ export class PropertiesComponent implements OnInit {
            this.snackbar.open('Property deleted successfully','Info',{
               duration:3000,
               panelClass:['snackbar-success']
-            })        
+            }) ; 
+            this.loadData();      
           },
           error: (error: any) => {
             const messages = error.error.title ?? error.error.errors.request;
