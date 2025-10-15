@@ -1,14 +1,14 @@
 .page-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* full viewport height */
+  min-height: calc(100vh - 100px);
   padding-top:1rem;
 }
 
 /* Table grows naturally */
 .table-container {
-  flex: 1 0 auto; /* natural height, can grow if needed */
-  overflow: auto;  /* scrolls if table gets too big */
+  flex: 1 0 auto; 
+  overflow: auto;  
 }
 
 /* Paginator stays at the bottom */

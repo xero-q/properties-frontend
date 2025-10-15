@@ -27,7 +27,7 @@ import { Host } from '../../../shared/interfaces/host.interface';
   templateUrl: './properties.component.html',
   styleUrl: './properties.component.scss'
 })
-export class Properties {
+export class PropertiesComponent {
   private readonly propertiesService = inject(PropertiesService);
   private readonly hostsService = inject(HostsService);
   protected readonly displayedColumns = ['id','host','name','location','status','pricePerNight','createdAt','actions'];
