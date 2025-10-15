@@ -41,3 +41,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .no-padding-dialog .mat-mdc-dialog-container {
   padding: 0 !important;
 }
+
+.snackbar-success {
+  background: #4caf50 !important;
+  color: #fff !important;
+}
+
+.snackbar-error {
+  background: #f44336 !important;
+  color: #fff !important;
+}
+
+.snackbar-info {
+  background: #2196f3 !important;
+  color: #fff !important;
+}

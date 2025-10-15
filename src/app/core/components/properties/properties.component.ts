@@ -48,10 +48,9 @@ export class PropertiesComponent implements OnInit {
 
   protected readonly hosts = signal<Host[]>([]);
 
-  isLoading = signal(true);
+  protected readonly isLoading = signal(true);
 
-  ngOnInit(){
-   
+  ngOnInit(){   
    this.hostsService.getAll().subscribe((data:Host[])=>{
     this.hosts.set(data);
     this.loadData();

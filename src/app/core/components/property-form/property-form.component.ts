@@ -11,6 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HostsService } from '../../services/hosts.service';
 import { Host } from '../../../shared/interfaces/host.interface';
 import { Property } from '../../../shared/interfaces/property.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-property-form',
@@ -20,6 +21,7 @@ import { Property } from '../../../shared/interfaces/property.interface';
 })
 export class PropertyFormComponent implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<PropertyFormComponent>);
+  private readonly snackbar = inject(MatSnackBar);
   protected readonly isSubmitting = signal(false);
   private readonly propertiesService = inject(PropertiesService);
   private readonly hostsService = inject(HostsService);
@@ -81,18 +83,25 @@ export class PropertyFormComponent implements OnInit {
         .subscribe({
           next: () => {
             this.isSubmitting.set(false);  
-            this.closeDialog('CREATED');          
+            this.closeDialog('CREATED');  
+            this.snackbar.open('Property created successfully','Info',{
+              duration:3000,
+              panelClass:['snackbar-success']
+            })        
           },
           error: (error: any) => {
             this.isSubmitting.set(false);
-            const messages = error.error.detail ?? error.error.error;
+            const messages = error.error.message ?? error.error.error;
             let messagesString = '';
             if (Array.isArray(messages)) {
               messagesString = messages.join('\n');
             } else {
               messagesString = messages;
             }
-            alert(messagesString);
+            this.snackbar.open(`Error:${messagesString}`,'Error',{
+              duration:3000,
+              panelClass:['snackbar-error']
+            })
           },
         });
       }
@@ -109,7 +118,11 @@ export class PropertyFormComponent implements OnInit {
         .subscribe({
           next: () => {
             this.isSubmitting.set(false);  
-            this.closeDialog('UPDATWED');          
+            this.closeDialog('UPDATWED'); 
+            this.snackbar.open('Property updated successfully','Info',{
+              duration:3000,
+              panelClass:['snackbar-success']
+            })         
           },
           error: (error: any) => {
             this.isSubmitting.set(false);
@@ -120,7 +133,10 @@ export class PropertyFormComponent implements OnInit {
             } else {
               messagesString = messages;
             }
-            alert(messagesString);
+             this.snackbar.open(`Error:${messagesString}`,'Error',{
+              duration:3000,
+              panelClass:['snackbar-error']
+            })
           },
         });
       }
