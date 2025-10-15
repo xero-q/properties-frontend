@@ -37,7 +37,7 @@ export class PropertyFormComponent implements OnInit {
       hostId: [0, [Validators.required, Validators.min(1)]],
       name: ['', Validators.required],
       location: ['', Validators.required],
-      pricePerNight: [0, [Validators.required,Validators.min(0.01)]],
+      pricePerNight: [0, [Validators.required,Validators.min(1),Validators.pattern(/^\d+(\.\d{1,})?$/) ]],
       status:['',Validators.required]
     })
   );
@@ -55,8 +55,6 @@ export class PropertyFormComponent implements OnInit {
   ngAfterViewInit(){
     if (this.id()){
       this.propertiesService.getOneProperty(this.id() ?? 0).subscribe((data:Property)=>{
-        console.log({data});
-        
         this.propertyForm().controls['hostId'].setValue(data.hostId);
         this.propertyForm().controls['name'].setValue(data.name);
         this.propertyForm().controls['location'].setValue(data.location);
@@ -91,7 +89,7 @@ export class PropertyFormComponent implements OnInit {
           },
           error: (error: any) => {
             this.isSubmitting.set(false);
-            const messages = error.error.message ?? error.error.error;
+            const messages = error.error.title ?? error.error.errors.request;
             let messagesString = '';
             if (Array.isArray(messages)) {
               messagesString = messages.join('\n');
@@ -126,7 +124,7 @@ export class PropertyFormComponent implements OnInit {
           },
           error: (error: any) => {
             this.isSubmitting.set(false);
-            const messages = error.error.detail ?? error.error.error;
+            const messages = error.error.title ?? error.error.errors.request;
             let messagesString = '';
             if (Array.isArray(messages)) {
               messagesString = messages.join('\n');

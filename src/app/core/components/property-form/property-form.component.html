@@ -39,18 +39,7 @@
         </mat-error>
       </mat-form-field>  
 
-      <!-- Location -->
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Price per Night</mat-label>
-        <input matInput formControlName="pricePerNight" placeholder="Price per Night" />
-        <mat-error *ngIf="propertyForm().controls['pricePerNight'].hasError('required')">
-          Price per Night is <strong>required</strong>
-        </mat-error>
-        <mat-error *ngIf="propertyForm().controls['pricePerNight'].hasError('min')">
-          Price per Night must be at least 0.01
-        </mat-error>
-      </mat-form-field>  
-
+      <!-- Status -->
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
@@ -63,8 +52,23 @@
         </mat-error>
        </mat-form-field>
 
+      <!-- Price Per Night -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Price per Night</mat-label>
+        <input matInput formControlName="pricePerNight" placeholder="Price per Night" />
+        <mat-error *ngIf="propertyForm().controls['pricePerNight'].hasError('required')">
+          Price per Night is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="propertyForm().controls['pricePerNight'].hasError('min')">
+          Price per Night must be at least 1.0
+        </mat-error>        
+        <mat-error *ngIf="propertyForm().controls['pricePerNight'].hasError('pattern')">
+          Price per Night must be a decimal number
+        </mat-error>
+      </mat-form-field>    
 
-      <!-- Login Button -->
+
+      <!-- Submit Button -->
       <button
         mat-raised-button
         color="primary"
@@ -77,6 +81,7 @@
       <!-- Signup Link -->
       <button
         mat-button
+        mat-raised-button
         type="button"
         class="full-width"
         (click)="closeDialog()"

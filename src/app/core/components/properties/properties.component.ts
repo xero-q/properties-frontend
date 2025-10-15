@@ -134,7 +134,7 @@ export class PropertiesComponent implements OnInit {
             })        
           },
           error: (error: any) => {
-            const messages = error.error.message ?? error.error.error;
+            const messages = error.error.title ?? error.error.errors.request;
             let messagesString = '';
             if (Array.isArray(messages)) {
               messagesString = messages.join('\n');
