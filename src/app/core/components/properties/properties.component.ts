@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PropertyFormComponent } from '../property-form/property-form.component';
 import { LoadingComponent } from "../../../shared/components/loading/loading.component";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DomainEventsService } from '../../services/domain-events.service';
 
 @Component({
   selector: 'app-properties',
@@ -35,6 +36,7 @@ export class PropertiesComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly snackbar = inject(MatSnackBar);
   private readonly propertiesService = inject(PropertiesService);
+  private readonly domainEventsService = inject(DomainEventsService);
   private readonly hostsService = inject(HostsService);
   protected readonly displayedColumns = ['id','host','name','location','status','pricePerNight','createdAt','actions'];
   protected readonly dataSource = new MatTableDataSource<Property>([]);
@@ -150,4 +152,28 @@ export class PropertiesComponent implements OnInit {
         });
     };
   } 
+
+  synchronizeProperty(id: number){
+    this.domainEventsService.createDomainEvent(id,'CREATED','{data:[1,2,3]}').subscribe({
+          next: () => {
+           this.snackbar.open('Property synchronized successfully','Info',{
+              duration:3000,
+              panelClass:['snackbar-success']
+            }) ;  
+          },
+          error: (error: any) => {
+            const messages = error.error.title ?? error.error.errors.request;
+            let messagesString = '';
+            if (Array.isArray(messages)) {
+              messagesString = messages.join('\n');
+            } else {
+              messagesString = messages;
+            }
+            this.snackbar.open(`Error:${messagesString}`,'Error',{
+              duration:3000,
+              panelClass:['snackbar-error']
+            })
+          },
+        })
+  }
 }
