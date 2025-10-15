@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {  MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { HostsService } from '../../services/hosts.service';
+import { Host } from '../../../shared/interfaces/host.interface';
 
 @Component({
   selector: 'app-properties',
@@ -27,8 +29,9 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class Properties {
   private readonly propertiesService = inject(PropertiesService);
-  displayedColumns = ['id','host','name','location','status','createdAt','actions'];
-  dataSource = new MatTableDataSource<Property>([]);
+  private readonly hostsService = inject(HostsService);
+  protected readonly displayedColumns = ['id','host','name','location','status','pricePerNight','createdAt','actions'];
+  protected readonly dataSource = new MatTableDataSource<Property>([]);
 
   totalItems = 0;
   pageSize = 10;
@@ -39,12 +42,17 @@ export class Properties {
   locationFilter = '';
   statusFilter = '';
 
+  protected readonly hosts = signal<Host[]>([]);
+
   ngOnInit(){
    this.loadData();
+   this.hostsService.getAll().subscribe((data:Host[])=>{
+    this.hosts.set(data);
+   })
   }
 
   loadData(){
-      this.propertiesService.getPaginated(this.pageSize,this.pageNumber, this.nameFilter,this.locationFilter, this.statusFilter ? Number(this.statusFilter):undefined).subscribe((data:Pagination<Property>)=>{
+      this.propertiesService.getPaginated(this.pageSize,this.pageNumber, this.nameFilter,this.locationFilter, this.statusFilter ? Number(this.statusFilter):undefined,this.hostFilter ? Number(this.hostFilter):undefined).subscribe((data:Pagination<Property>)=>{
         this.totalItems = data.totalItems; 
         this.dataSource.data = data.result;
     })
@@ -64,6 +72,7 @@ export class Properties {
     this.nameFilter = '';
     this.locationFilter = '';
     this.statusFilter = '';
+    this.hostFilter = '';
     this.loadData();
   }
  

@@ -1,9 +1,15 @@
 <div class="mat-elevation-z8 page-container"> 
     <div class="table-container mat-elevation-z8">
 <div class="filter-row">
-  <mat-form-field appearance="outline" floatLabel="always">
-     <mat-label>Host</mat-label>
-    <input matInput [(ngModel)]="hostFilter" placeholder="Filter by host">
+  <mat-form-field appearance="outline">
+   <mat-label>Host</mat-label>
+    <mat-select [(ngModel)]="hostFilter">
+      <mat-option [value]="''">Select Host</mat-option>
+      @for (host of hosts();track host.id){
+        <mat-option [value]="host.id">{{host.fullName}}</mat-option>
+      }
+      
+    </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="outline" floatLabel="always">
@@ -59,6 +65,12 @@
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let property">{{ property.status === 0 ? 'Inactive':'Active' }}</td>
+    </ng-container>
+
+      <!-- PricePerNight Column -->
+    <ng-container matColumnDef="pricePerNight">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Price per Night</th>
+      <td mat-cell *matCellDef="let property">{{ property.pricePerNight | currency:'USD'}}</td>
     </ng-container>
 
      <!-- CreatedAt Column -->
