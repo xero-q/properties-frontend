@@ -31,5 +31,37 @@ export class PropertiesService {
 
     return this.httpClient.get<Pagination<Property>>(`${this.apiUrl}/properties`, { params });
   }
+
+  getOneProperty(id: number):Observable<Property>{
+      return this.httpClient.get<Property>(`${this.apiUrl}/properties/${id}`);
+  }
+
+  createProperty(hostId:number,name:string,location:string,pricePerNight:number,status:number):Observable<Property>{
+    const payload = {
+      hostId,
+      name,
+      location,
+      pricePerNight,
+      status
+    };
+    
+    return this.httpClient.post<Property>(`${this.apiUrl}/properties`,payload);
+  }
+
+   deleteProperty(id: number) {
+      return this.httpClient.delete(`${this.apiUrl}/properties/${id}`);
+  }
+
+  updateProperty(id: number,hostId:number,name:string,location:string,pricePerNight:number,status:number):Observable<Property>{
+    const payload = {      
+      hostId,
+      name,
+      location,
+      pricePerNight,
+      status
+    };
+    
+    return this.httpClient.put<Property>(`${this.apiUrl}/properties/${id}`,payload);
+  }
   
 }

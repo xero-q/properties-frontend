@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {  MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { HostsService } from '../../services/hosts.service';
 import { Host } from '../../../shared/interfaces/host.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { PropertyFormComponent } from '../property-form/property-form.component';
 
 @Component({
   selector: 'app-properties',
@@ -27,7 +29,8 @@ import { Host } from '../../../shared/interfaces/host.interface';
   templateUrl: './properties.component.html',
   styleUrl: './properties.component.scss'
 })
-export class PropertiesComponent {
+export class PropertiesComponent implements OnInit {
+  private readonly dialog = inject(MatDialog);
   private readonly propertiesService = inject(PropertiesService);
   private readonly hostsService = inject(HostsService);
   protected readonly displayedColumns = ['id','host','name','location','status','pricePerNight','createdAt','actions'];
@@ -75,5 +78,50 @@ export class PropertiesComponent {
     this.hostFilter = '';
     this.loadData();
   }
- 
+
+  createProperty(){
+    const data = {};
+    
+    let dialogRef = this.dialog.open(PropertyFormComponent, {
+      width: '25rem',
+      height: 'auto',
+      autoFocus: false,
+      data,
+      panelClass: 'no-padding-dialog'
+    });
+
+    dialogRef.updatePosition({ top: '100px' });
+    dialogRef.afterClosed().subscribe((msg) => {
+      if (msg) {
+        this.loadData();
+      }
+    });
+  }
+
+  editProperty(id: number){
+   const data = {id};
+    
+    let dialogRef = this.dialog.open(PropertyFormComponent, {
+      width: '25rem',
+      height: 'auto',
+      autoFocus: false,
+      data,
+      panelClass: 'no-padding-dialog'
+    });
+
+    dialogRef.updatePosition({ top: '100px' });
+    dialogRef.afterClosed().subscribe((msg) => {
+      if (msg) {
+        this.loadData();
+      }
+    });
+  }
+
+  deleteProperty(id: number){
+    if (confirm('Are you sure you want to delete this property?')){
+      this.propertiesService.deleteProperty(id).subscribe(()=>{
+        this.loadData();
+      });
+    };
+  } 
 }

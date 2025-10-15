@@ -33,6 +33,8 @@
 
    <button mat-button color="primary" (click)="applyFilters()">Apply Filters</button>
    <button mat-button color="primary" (click)="resetFilters()">Reset Filters</button>
+   <button mat-button color="primary" (click)="createProperty()">Add Property</button>
+
 </div>
 
   <table mat-table [dataSource]="dataSource" matSort class="full-width-table">
@@ -83,8 +85,8 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let property">
-        <button mat-button color="primary">Edit</button>
-        <button mat-button color="warn">Delete</button>
+        <button mat-button color="primary" (click)="editProperty(property.id)">Edit</button>
+        <button mat-button color="warn" (click)="deleteProperty(property.id)">Delete</button>
       </td>
     </ng-container>
 
