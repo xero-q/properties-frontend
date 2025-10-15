@@ -15,6 +15,7 @@ import { Host } from '../../../shared/interfaces/host.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { PropertyFormComponent } from '../property-form/property-form.component';
 import { LoadingComponent } from "../../../shared/components/loading/loading.component";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-properties',
@@ -32,6 +33,7 @@ import { LoadingComponent } from "../../../shared/components/loading/loading.com
 })
 export class PropertiesComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
+  private readonly snackbar = inject(MatSnackBar);
   private readonly propertiesService = inject(PropertiesService);
   private readonly hostsService = inject(HostsService);
   protected readonly displayedColumns = ['id','host','name','location','status','pricePerNight','createdAt','actions'];
@@ -124,9 +126,27 @@ export class PropertiesComponent implements OnInit {
 
   deleteProperty(id: number){
     if (confirm('Are you sure you want to delete this property?')){
-      this.propertiesService.deleteProperty(id).subscribe(()=>{
-        this.loadData();
-      });
+      this.propertiesService.deleteProperty(id).subscribe({
+          next: () => {
+           this.snackbar.open('Property deleted successfully','Info',{
+              duration:3000,
+              panelClass:['snackbar-success']
+            })        
+          },
+          error: (error: any) => {
+            const messages = error.error.message ?? error.error.error;
+            let messagesString = '';
+            if (Array.isArray(messages)) {
+              messagesString = messages.join('\n');
+            } else {
+              messagesString = messages;
+            }
+            this.snackbar.open(`Error:${messagesString}`,'Error',{
+              duration:3000,
+              panelClass:['snackbar-error']
+            })
+          },
+        });
     };
   } 
 }
