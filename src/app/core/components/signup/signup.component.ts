@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-signup',
   imports: [
@@ -30,6 +31,7 @@ import { CommonModule } from '@angular/common';
 export class SignupComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly snackbar = inject(MatSnackBar);
   private readonly router = inject(Router);
 
   protected readonly hidePassword = signal(true);
@@ -71,14 +73,18 @@ export class SignupComponent {
             this.router.navigate(['/login']);
           },
           error: (error: any) => {
-            const errorObj = error.error;
-            const messages = [];
-
-            for (const key in errorObj) {
-              messages.push(`${key}: ${errorObj[key]}`);
+            console.log({error});
+            const messages = error.error.message ?? error.error.errors;
+            let messagesString = '';
+            if (Array.isArray(messages)) {
+              messagesString = messages.join('\n');
+            } else {
+              messagesString = messages;
             }
-
-            alert(messages.join('\n'));
+            this.snackbar.open(messagesString,'Error',{
+              duration:3000,
+              panelClass:['snackbar-error']
+            })
           },
         });
     }

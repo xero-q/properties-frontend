@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly snackbar = inject(MatSnackBar);
   private readonly router = inject(Router);
 
   protected readonly loginForm = signal(
@@ -49,14 +51,17 @@ export class LoginComponent {
           },
           error: (error: any) => {
             this.isSubmitting.set(false);
-            const messages = error.error.detail ?? error.error.error;
+            const messages = error.error.message ?? error.error.errors;
             let messagesString = '';
             if (Array.isArray(messages)) {
               messagesString = messages.join('\n');
             } else {
               messagesString = messages;
             }
-            alert(messagesString);
+            this.snackbar.open(messagesString,'Error',{
+              duration:3000,
+              panelClass:['snackbar-error']
+            })
           },
         });
     }
